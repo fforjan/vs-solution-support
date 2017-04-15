@@ -1,10 +1,10 @@
 import { Dotnet } from './dotnet';
 
 import * as vscode from 'vscode';
-export class Solution {
+export class Project {
 
-    public static ListProjects(solutionFile: string) :Thenable<string[]> {        
-        return Dotnet.execute( ["sln", solutionFile ,"list"]).then(result => {
+    public static ListProjectReferences(projectFile: string) :Thenable<string[]> {        
+        return Dotnet.execute( ["list", projectFile ,"reference"]).then(result => {
             // skip header
             result.shift();
             result.shift();
