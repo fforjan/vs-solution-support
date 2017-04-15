@@ -2,16 +2,21 @@ import * as vscode from 'vscode';
 
 import * as fs from 'fs';
 import * as path from 'path';
+import { INodeItem } from './inodeitem';
+import { SolutionNode } from './solution';
 
-export class DepNodeProvider implements vscode.TreeExplorerNodeProvider<DepNode> {
+export class SolutionProvider implements vscode.TreeExplorerNodeProvider<DepNode>, INodeItem {
+	kind: string;
+	label: string;
 	constructor(private workspaceRoot: string) {
+		this.kind = 'root';
 	}
 
 	/**
 	 * As root node is invisible, its label doesn't matter.
 	 */
 	getLabel(node: DepNode): string {
-		return node.kind === 'root' ? '' : node.moduleName;
+		return node.label;
 	}
 
 	/**
@@ -29,99 +34,28 @@ export class DepNodeProvider implements vscode.TreeExplorerNodeProvider<DepNode>
 	}
 
 	provideRootNode(): DepNode {
-		return new Root();
+		return this;
 	}
 
 	resolveChildren(node: DepNode): Thenable<DepNode[]> {
 		if (!this.workspaceRoot) {
 			vscode.window.showInformationMessage('No dependency in empty workspace');
 			return Promise.resolve([]);
-		}
+		}		
 
-		return new Promise((resolve) => {
-			switch (node.kind) {
-				case 'root':
-					const packageJsonPath = path.join(this.workspaceRoot, 'package.json');
-					if (this.pathExists(packageJsonPath)) {
-						resolve(this.getDepsInPackageJson(packageJsonPath));
-					} else {
-						vscode.window.showInformationMessage('Workspace has no package.json');
-						resolve([]);
-					}
-					break;
-				/**
-				 * npm3 has flat dependencies, so indirect dependencies are still in `node_modules`.
-				 */
-				case 'node':
-					resolve(this.getDepsInPackageJson(path.join(this.workspaceRoot, 'node_modules', node.moduleName, 'package.json')));
-					break;
-				case 'leaf':
-					resolve([]);
-			}
+		return node.getChildren();
+	}
+
+	getChildren(): Thenable<DepNode[]> {		
+		return new Promise<DepNode[]>((resolve) => 
+		{
+			resolve([ 
+				new SolutionNode(
+					path.join(this.workspaceRoot, fs.readdirSync(this.workspaceRoot).find( _ => _.endsWith('.sln')))
+				)]
+			);
 		});
 	}
-
-	/**
-	 * Given the path to package.json, read all its dependencies and devDependencies.
-	 */
-	private getDepsInPackageJson(packageJsonPath: string): DepNode[] {
-		if (this.pathExists(packageJsonPath)) {
-			const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
-
-			const toDep = (moduleName: string): DepNode => {
-				if (this.pathExists(path.join(this.workspaceRoot, 'node_modules', moduleName))) {
-					return new Node(moduleName);
-				} else {
-					return new Leaf(moduleName);
-				}
-			}
-
-			const deps = packageJson.dependencies
-				? Object.keys(packageJson.dependencies).map(toDep)
-				: [];
-			const devDeps = packageJson.devDependencies
-				? Object.keys(packageJson.devDependencies).map(toDep)
-				: [];
-			return deps.concat(devDeps);
-		} else {
-			return [];
-		}
-	}
-
-	private pathExists(p: string): boolean {
-		try {
-			fs.accessSync(p);
-		} catch (err) {
-			return false;
-		}
-
-		return true;
-	}
 }
 
-export type DepNode = Root // Root node
-	| Node // A dependency installed to `node_modules`
-	| Leaf // A dependency not present in `node_modules`
-	;
-
-class Root {
-	kind: 'root' = 'root';
-}
-
-class Node {
-	kind: 'node' = 'node';
-
-	constructor(
-		public moduleName: string
-	) {
-	}
-}
-
-class Leaf {
-	kind: 'leaf' = 'leaf'
-
-	constructor(
-		public moduleName: string
-	) {
-	}
-}
+export type DepNode = INodeItem;
