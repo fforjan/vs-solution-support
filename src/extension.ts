@@ -2,6 +2,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
+import * as tree from './tree';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -21,9 +22,22 @@ export function activate(context: vscode.ExtensionContext) {
         vscode.window.showInformationMessage('Hello World!');
     });
 
+    const rootPath = vscode.workspace.rootPath;
+
+	// The `providerId` here must be identical to `contributes.explorer.treeExplorerNodeProviderId` in package.json.
+	vscode.window.registerTreeExplorerNodeProvider('depTree', new tree.DepNodeProvider(rootPath));
+
+	// This command will be invoked using exactly the node you provided in `resolveChildren`.
+	vscode.commands.registerCommand('extension.openPackageOnNpm', (node: tree.DepNode) => {
+		if (node.kind === 'leaf') {
+			vscode.commands.executeCommand('vscode.open', vscode.Uri.parse(`https://www.npmjs.com/package/${node.moduleName}`));
+		}
+	});
+
     context.subscriptions.push(disposable);
 }
 
 // this method is called when your extension is deactivated
 export function deactivate() {
 }
+
