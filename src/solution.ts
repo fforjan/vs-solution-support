@@ -1,6 +1,7 @@
 import {INodeItem} from './inodeitem';
 import {ProjectNode } from './project';
 import {spawn} from "child_process";
+import * as path from 'path';
 
 const dotnet = "dotnet";
 export class SolutionNode  implements INodeItem {
@@ -9,7 +10,7 @@ export class SolutionNode  implements INodeItem {
     label: string = "solution";
     
     constructor(solutionFile : string) {
-        this.solutionFile = solutionFile;
+        this.solutionFile = solutionFile;        
     }
 
     getChildren(): Thenable<INodeItem[]> {        
@@ -24,8 +25,8 @@ export class SolutionNode  implements INodeItem {
         }).then( (result) => { return new Promise<INodeItem[]>((resolve) =>
             {
                 var projects = SolutionNode.SplitIntoLines(result);
-
-                resolve(projects.map( project => new ProjectNode(project)));
+                var directory = path.dirname(this.solutionFile);
+                resolve(projects.map( project => new ProjectNode(path.join(directory, project))));
             })
         });
     }
