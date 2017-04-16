@@ -3,7 +3,6 @@ import { Dotnet } from './dotnet';
 import * as path from 'path';
 import * as fs from 'fs';
 
-import * as vscode from 'vscode';
 export class Project {
 
     public static ListProjectReferences(projectFile: string) :Thenable<string[]> {        
@@ -12,7 +11,7 @@ export class Project {
             result.shift();
             result.shift();
             return Promise.resolve(result);
-        })
+        });
     }
 
     public static ListNugetPackages(projectFile:string): Thenable<{id:string, version:string}[]> {
@@ -20,7 +19,9 @@ export class Project {
 
         return new Promise<{id:string, version:string}[]>((resolve, reject) => {
             fs.readFile(packageConfigFile, function (err, data) {
-             if (err) resolve([]);
+             if (err) {
+                 resolve([]);
+             }
              else {
                 let xmlContent = data.toString();
                 const regex = /id="([^"]*)".*version="([^"]*)"/g;

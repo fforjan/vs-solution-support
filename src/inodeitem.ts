@@ -1,7 +1,7 @@
 export  interface INodeItem {
 
-	readonly kind: string;
-	readonly label:string;
+	kind: string;
+	label: string;
 
     getChildren(): Thenable<INodeItem[]>;
 }

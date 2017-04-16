@@ -27,7 +27,7 @@ export class ProjectReferencesNode implements INodeItem {
     }
 
     getChildren(): Thenable<INodeItem[]> {
-        return Project.ListProjectReferences(this.projectFile).then( (references) =>  Promise.resolve(references.map( _ => new FileReferenceNode(_))))
+        return Project.ListProjectReferences(this.projectFile).then( (references) =>  Promise.resolve(references.map( _ => new FileReferenceNode(_))));
     }
 
 }
@@ -42,7 +42,7 @@ export class NugetReferencesNode implements INodeItem {
     }
 
     getChildren(): Thenable<INodeItem[]> {
-        return Project.ListNugetPackages(this.projectFile).then( (references) =>  Promise.resolve(references.map( _ => new NugetReferenceNode(_))))
+        return Project.ListNugetPackages(this.projectFile).then( (references) =>  Promise.resolve(references.map( _ => new NugetReferenceNode(_))));
     }
 
 }
