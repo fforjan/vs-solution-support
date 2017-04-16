@@ -3,6 +3,7 @@ declare var Viva: any;
 declare var projects: string[];
 declare var relationShips: {from:string, to:string}[];
 
+// tslint:disable-next-line:no-unused-variable
 function onLoad() {
 
     let graph = Viva.Graph.graph();

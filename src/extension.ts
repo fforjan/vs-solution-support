@@ -2,7 +2,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import * as tree from './tree';
+import * as tree from './tree/tree';
 import { buildSolution }   from './build/buildSolution';
 import { DependenciesProvider } from './dependenciesViewer/dependenciesProvider';
 // this method is called when your extension is activated
@@ -35,9 +35,9 @@ export function activate(context: vscode.ExtensionContext) {
 	vscode.window.registerTreeExplorerNodeProvider('solutionExplorer', new tree.SolutionProvider(rootPath, vscode.workspace.getConfiguration('solutionExplorer'), context.workspaceState ));
 
 	// This command will be invoked using exactly the node you provided in `resolveChildren`.
-	vscode.commands.registerCommand('extension.openPackageOnNpm', (node: tree.DepNode) => {
+	vscode.commands.registerCommand('extension.vs-solution-support.openSolutionTreeItem', (node: tree.DepNode) => {
 		if (node.kind === 'leaf') {
-			vscode.commands.executeCommand('vscode.open', vscode.Uri.parse(`https://www.npmjs.com/package/${node.label}`));
+			vscode.commands.executeCommand('vscode.open', vscode.Uri.file(node.filePath));
 		}
 	});
 

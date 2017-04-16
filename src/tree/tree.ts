@@ -8,6 +8,8 @@ import { SolutionNode } from './solution';
 export class SolutionProvider implements vscode.TreeExplorerNodeProvider<DepNode>, INodeItem {
 	kind: string;
 	label: string;
+	filePath: string;
+
 	constructor(private workspaceRoot: string, private configuration: any, private state: vscode.Memento) {
 		this.kind = 'root';
 	}
@@ -30,7 +32,7 @@ export class SolutionProvider implements vscode.TreeExplorerNodeProvider<DepNode
 	 * Invoke `extension.openPackageOnNpm` command when a Leaf node is clicked.
 	 */
 	getClickCommand(node: DepNode): string {
-		return node.kind === 'leaf' ? 'extension.openPackageOnNpm' : null;
+		return node.kind === 'leaf' ? 'extension.vs-solution-support.openSolutionTreeItem' : null;
 	}
 
 	provideRootNode(): DepNode {
@@ -49,9 +51,9 @@ export class SolutionProvider implements vscode.TreeExplorerNodeProvider<DepNode
 	getChildren(): Thenable<DepNode[]> {		
 		return new Promise<DepNode[]>((resolve) => 
 		{
-			let solution = <string>this.configuration.file || fs.readdirSync(this.workspaceRoot).find( _ => _.endsWith('.sln'));
+			this.filePath = <string>this.configuration.file || fs.readdirSync(this.workspaceRoot).find( _ => _.endsWith('.sln'));
 			
-			let absolutePath = path.join(this.workspaceRoot, solution );
+			let absolutePath = path.join(this.workspaceRoot, this.filePath );
 			this.state.update("solutionFile", absolutePath);
 
 			resolve([ 
