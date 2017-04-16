@@ -4,25 +4,34 @@
 import * as vscode from 'vscode';
 import * as tree from './tree';
 import { buildSolution }   from './build/buildSolution';
-
+import { DependenciesProvider } from './dependenciesViewer/dependenciesProvider';
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
-    
-    // Use the console to output diagnostic information (console.log) and errors (console.error)
-    // This line of code will only be executed once when your extension is activated
-    console.log('Congratulations, your extension "vs-solution-support" is now active!');
 
+    const provider = new DependenciesProvider();
+
+	// register content provider for scheme `references`
+	// register document link provider for scheme `references`
+	const providerRegistrations = vscode.Disposable.from(
+		vscode.workspace.registerTextDocumentContentProvider( DependenciesProvider.scheme, provider)
+	);
+
+	// register command that crafts an uri with the `references` scheme,
+	// open the dynamic document, and shows it in the next editor
+	const commandRegistration = vscode.commands.registerCommand('extension.vs-solution-support.displayDependencies', () => {		
+        let uri = vscode.Uri.parse(`${ DependenciesProvider.scheme}:solution`);
+		return vscode.workspace.openTextDocument(uri).then(doc => vscode.window.showTextDocument(doc));
+	});
+    
     // The command has been defined in the package.json file
     // Now provide the implementation of the command with  registerCommand
     // The commandId parameter must match the command field in package.json
-    let disposable = vscode.commands.registerCommand('extension.vs-solution-support.buildSolution', () => {
-            
+    let disposable = vscode.commands.registerCommand('extension.vs-solution-support.buildSolution', () => {            
         buildSolution(context.workspaceState.get<string>('solutionFile'));
     });
 
-    const rootPath = vscode.workspace.rootPath;
-    
+    const rootPath = vscode.workspace.rootPath;    
 	vscode.window.registerTreeExplorerNodeProvider('solutionExplorer', new tree.SolutionProvider(rootPath, vscode.workspace.getConfiguration('solutionExplorer'), context.workspaceState ));
 
 	// This command will be invoked using exactly the node you provided in `resolveChildren`.
@@ -32,7 +41,12 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	});
 
-    context.subscriptions.push(disposable);
+    context.subscriptions.push(
+        disposable,
+		provider,
+		commandRegistration,
+		providerRegistrations
+	);
 }
 
 // this method is called when your extension is deactivated

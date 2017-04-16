@@ -20,6 +20,10 @@
       {
         "command": "extension.vs-solution-support.buildSolution",
         "title": "Build Active Solution"
+      },
+      {
+        "command": "extension.vs-solution-support.displayDependencies",
+        "title": "Display Dependencies"
       }
     ],
     "explorer": {
