@@ -43,6 +43,9 @@ function analyseOutput(buildOutput: string, diagnostic: vscode.DiagnosticCollect
 
 export function buildSolution(solutionPath : string) {
 
+    // ensure all files are saved
+    vscode.workspace.saveAll();
+
     let buildOutput  = "";
     let channel = vscode.window.createOutputChannel("VSBuild");
     channel.clear();
