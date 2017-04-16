@@ -2,6 +2,7 @@
 
 import * as vscode from 'vscode';
 import * as path from 'path';
+import * as fs from 'fs';
 import {Solution} from '../dotnet/solution';
 import {Project} from '../dotnet/project';
 export class DependenciesDocument {
@@ -48,102 +49,35 @@ export class DependenciesDocument {
                         }
                         
                  );            
-        })
+        });
+    }
+
+    get scriptDocument() : Thenable<string> {
+        let scriptFile = path.join(__dirname, "graphLoader.js");
+        
+        return new Promise<string>((resolve, reject) => {    
+         fs.readFile(scriptFile, function (err, data) {
+             if (err) {
+                reject(err);
+             }
+             else {
+                resolve(data.toString());
+             }
+         });
+        });
     }
 
     get value() : Thenable<string> {
-        return Promise.all([this.relationShips, this.projects]).then((info) =>         
+        return Promise.all([this.relationShips, this.projects, this.scriptDocument]).then((info) =>         
         Promise.resolve(`<html> <head>
         <title>VivaGraphs test page</title>
         <script src="https://anvaka.github.io/VivaGraphJS/dist/vivagraph.js"></script>
         <script type='text/javascript'>
-                  function onLoad() {
-            
-            var relationShips = ${JSON.stringify(info[0])};
-            var projects = ${JSON.stringify(info[1])};
-             var graph = Viva.Graph.graph();
+          var relationShips = ${JSON.stringify(info[0])};
+          var projects = ${JSON.stringify(info[1])};
 
-var graphics = Viva.Graph.View.svgGraphics(),
-nodeSize = 24;
-
-var layout = Viva.Graph.Layout.forceDirected(graph, {
-    springLength : 180,
-    springCoeff : 0.0005,
-    dragCoeff : 0.02,
-    gravity : -8
-});
-
-var renderer = Viva.Graph.View.renderer(graph, {
-    graphics : graphics,
-    layout : layout
-});
-renderer.run();
-
-graphics.node(function(node) {
-    return Viva.Graph.svg('text')
-        .attr('width', nodeSize)
-        .attr('height', nodeSize)
-        .text(node.id);
-    }).placeNode(function(nodeUI, pos) {
-        nodeUI.attr('x', pos.x - nodeSize / 2).attr('y', pos.y - nodeSize / 2);
-});
-
-var createMarker = function(id) {
-        return Viva.Graph.svg('marker')
-                .attr('id', id)
-                .attr('viewBox', "0 0 10 10")
-                .attr('refX', "10")
-                .attr('refY', "5")
-                .attr('markerUnits', "strokeWidth")
-                .attr('markerWidth', "10")
-                .attr('markerHeight', "5")
-                .attr('orient', "auto");
-},
-
-marker = createMarker('Triangle');
-marker.append('path').attr('d', 'M 0 0 L 10 5 L 0 10 z');
-
-var defs = graphics.getSvgRoot().append('defs');
-defs.append(marker);
-
-var geom = Viva.Graph.geom();
-
-graphics.link(function(link){
-       
-    return Viva.Graph.svg('path')
-        .attr('stroke', 'lime')
-        .attr('marker-end', 'url(#Triangle)');
-    }).placeLink(function(linkUI, fromPos, toPos) {
-        var toNodeSize = nodeSize,
-        fromNodeSize = nodeSize;
-
-        var from = geom.intersectRect(
-            fromPos.x - fromNodeSize / 2, // left
-            fromPos.y - fromNodeSize / 2, // top
-            fromPos.x + fromNodeSize / 2, // right
-            fromPos.y + fromNodeSize / 2, // bottom
-            fromPos.x, fromPos.y, toPos.x, toPos.y)
-        || fromPos;
-
-        var to = geom.intersectRect(
-            toPos.x - toNodeSize / 2, // left
-            toPos.y - toNodeSize / 2, // top
-            toPos.x + toNodeSize / 2, // right
-            toPos.y + toNodeSize / 2, // bottom
-            // segment:
-            toPos.x, toPos.y, fromPos.x, fromPos.y)
-            || toPos;
-
-        var data = 'M' + from.x + ',' + from.y +
-            'L' + to.x + ',' + to.y;
-
-        linkUI.attr("d", data);
-    });
-
-// Finally we add something to the graph:
-projects.forEach(function(project) {graph.addNode(project ) } );
-relationShips.forEach(function(relationShip) {graph.addLink(relationShip.from, relationShip.to ) } );
-            }            
+          ${info[2]}
+                        
         </script>
          <style type='text/css'>html, body, svg { width: 100%; height: 100%; background-color: white} </style>
     </head>
