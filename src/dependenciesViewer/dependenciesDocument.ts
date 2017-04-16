@@ -9,20 +9,27 @@ export class DependenciesDocument {
     _emitter: any;
     _uri: any;
 
-	constructor(uri: vscode.Uri, emitter: vscode.EventEmitter<vscode.Uri>) {
-		this._uri = uri;
+    constructor(uri: vscode.Uri, emitter: vscode.EventEmitter<vscode.Uri>) {
+        this._uri = uri;
 
-		// The ReferencesDocument has access to the event emitter from
-		// the containg provider. This allows it to signal changes
-		this._emitter = emitter;		
-	}
+        // The ReferencesDocument has access to the event emitter from
+        // the containg provider. This allows it to signal changes
+        this._emitter = emitter;
+    }
+
+    get relationShips(): {from: string, to: string}[] {
+        return [ {from: "fred", to:"eric"}, {from: "fred", to:"erick"}];
+    }
 
     get value() {
-		return `<html> <head>
+        var relationShips = JSON.stringify(this.relationShips);
+        return `<html> <head>
         <title>VivaGraphs test page</title>
         <script src="https://anvaka.github.io/VivaGraphJS/dist/vivagraph.js"></script>
         <script type='text/javascript'>
                   function onLoad() {
+
+            var relationShips = ${relationShips};
              var graph = Viva.Graph.graph();
 
 var graphics = Viva.Graph.View.svgGraphics(),
@@ -34,14 +41,13 @@ var renderer = Viva.Graph.View.renderer(graph, {
 renderer.run();
 
 graphics.node(function(node) {
-    return Viva.Graph.svg('image')
+    return Viva.Graph.svg('text')
         .attr('width', nodeSize)
         .attr('height', nodeSize)
-        .link('https://secure.gravatar.com/avatar/' + node.data);
+        .text(node.id);
     }).placeNode(function(nodeUI, pos) {
         nodeUI.attr('x', pos.x - nodeSize / 2).attr('y', pos.y - nodeSize / 2);
 });
-
 
 var createMarker = function(id) {
         return Viva.Graph.svg('marker')
@@ -64,13 +70,10 @@ defs.append(marker);
 var geom = Viva.Graph.geom();
 
 graphics.link(function(link){
-    var label = Viva.Graph.svg('text').attr('id','label_'+link.data.id).text(link.data.id);
-            	        graphics.getSvgRoot().childNodes[0].append(label);
-    
+       
     return Viva.Graph.svg('path')
-        .attr('stroke', 'gray')
-        .attr('marker-end', 'url(#Triangle)')
-        .attr('id', link.data.id);
+        .attr('stroke', 'lime')
+        .attr('marker-end', 'url(#Triangle)');
     }).placeLink(function(linkUI, fromPos, toPos) {
         var toNodeSize = nodeSize,
         fromNodeSize = nodeSize;
@@ -96,24 +99,14 @@ graphics.link(function(link){
             'L' + to.x + ',' + to.y;
 
         linkUI.attr("d", data);
-    
-        document.getElementById('label_'+linkUI.attr('id'))
-                	.attr("x", (from.x + to.x) / 2)
-                	.attr("y", (from.y + to.y) / 2);
     });
 
 // Finally we add something to the graph:
-graph.addNode('anvaka', '91bad8ceeec43ae303790f8fe238164b');
-graph.addNode('indexzero', 'd43e8ea63b61e7669ded5b9d3c2e980f');
-graph.addNode('test', 'd43e8ea63b61e7669ded5b9d3c2e980f');
-graph.addLink('anvaka', 'indexzero', {id : 1});
-graph.addLink('anvaka', 'test', {id : 2});
+relationShips.forEach(function(relationShip) {graph.addLink(relationShip.from, relationShip.to ) } );
             }            
         </script>
-         <style type='text/css'>html, body, svg { width: 100%; height: 100%;} </style>
+         <style type='text/css'>html, body, svg { width: 100%; height: 100%; background-color: white} </style>
     </head>
-    <body onload="onLoad()">
-        <div id="graph-container" width='1000px' height='1000px' ></div>
-    </body></html>`;
-	}
+    <body onload="onLoad()">    </body></html>`;
+    }
 }
