@@ -20,7 +20,7 @@ export function activate(context: vscode.ExtensionContext) {
 	// register command that crafts an uri with the `references` scheme,
 	// open the dynamic document, and shows it in the next editor
 	const commandRegistration = vscode.commands.registerCommand('extension.vs-solution-support.displayDependencies', () => {		
-        let uri = vscode.Uri.parse(`${ DependenciesProvider.scheme}:solution`);
+        let uri = vscode.Uri.parse(`${ DependenciesProvider.scheme}:solution?${context.workspaceState.get<string>('solutionFile')}`);
         return vscode.commands.executeCommand('vscode.previewHtml', uri, vscode.ViewColumn.Two, 'Solution Dependencies');
 	});
     

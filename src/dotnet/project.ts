@@ -7,10 +7,7 @@ export class Project {
 
     public static ListProjectReferences(projectFile: string) :Thenable<string[]> {        
         return Dotnet.execute( ["list", projectFile ,"reference"]).then(result => {
-            // skip header
-            result.shift();
-            result.shift();
-            return Promise.resolve(result);
+            return result.filter(_ => _.endsWith("proj"));
         });
     }
 
