@@ -10,7 +10,7 @@
 		"no-consecutive-blank-lines": [
 			true
 		],
-		"quotemark": [
+		"quotemark": [true, 
 			"double"
 		],
 		"no-var-keyword": true,
