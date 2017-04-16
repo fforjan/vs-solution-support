@@ -21,7 +21,7 @@ export function activate(context: vscode.ExtensionContext) {
 	// open the dynamic document, and shows it in the next editor
 	const commandRegistration = vscode.commands.registerCommand('extension.vs-solution-support.displayDependencies', () => {		
         let uri = vscode.Uri.parse(`${ DependenciesProvider.scheme}:solution`);
-		return vscode.workspace.openTextDocument(uri).then(doc => vscode.window.showTextDocument(doc));
+        return vscode.commands.executeCommand('vscode.previewHtml', uri, vscode.ViewColumn.Two, 'Solution Dependencies');
 	});
     
     // The command has been defined in the package.json file

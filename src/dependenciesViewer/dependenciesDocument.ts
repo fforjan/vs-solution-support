@@ -18,6 +18,6 @@ export class DependenciesDocument {
 	}
 
     get value() {
-		return "hello world";
+		return "<body><h1>hello world</h1></body>";
 	}
 }
