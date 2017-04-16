@@ -23,9 +23,9 @@
       }
     ],
     "explorer": {
-      "treeLabel": "Dependencies",
+      "treeLabel": "Solution Explorer",
       "icon": "media/dep.svg",
-      "treeExplorerNodeProviderId": "depTree"
+      "treeExplorerNodeProviderId": "solutionExplorer"
     },
     "configuration": {
       "type": "object",
