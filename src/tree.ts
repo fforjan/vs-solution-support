@@ -8,7 +8,7 @@ import { SolutionNode } from './solution';
 export class SolutionProvider implements vscode.TreeExplorerNodeProvider<DepNode>, INodeItem {
 	kind: string;
 	label: string;
-	constructor(private workspaceRoot: string, private configuration: any) {
+	constructor(private workspaceRoot: string, private configuration: any, private state: vscode.Memento) {
 		this.kind = 'root';
 	}
 
@@ -51,8 +51,11 @@ export class SolutionProvider implements vscode.TreeExplorerNodeProvider<DepNode
 		{
 			var solution = <string>this.configuration.file || fs.readdirSync(this.workspaceRoot).find( _ => _.endsWith('.sln'));
 			
+			var absolutePath = path.join(this.workspaceRoot, solution );
+			this.state.update("solutionFile", absolutePath);
+
 			resolve([ 
-				new SolutionNode(path.join(this.workspaceRoot, solution ))
+				new SolutionNode(absolutePath)
 				]
 			);
 		});

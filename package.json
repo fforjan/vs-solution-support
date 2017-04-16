@@ -18,8 +18,8 @@
     "contributes": {
         "commands": [
             {
-                "command": "extension.sayHello",
-                "title": "Hello World"
+                "command": "extension.vs-solution-support.buildSolution",
+                "title": "Build Active Solution"
             }
         ],
         "explorer": {
