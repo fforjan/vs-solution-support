@@ -32,11 +32,11 @@ export function activate(context: vscode.ExtensionContext) {
 	}));
 
 	disposable.push(vscode.commands.registerCommand("extension.vs-solution-support.selectPlatform", () => {		
-        uiManager.selectPlatform().then((platform) => getCurrentConfiguration().update("platform", platform));
+        uiManager.selectPlatform(context.workspaceState.get<string>("solutionFile")).then((platform) => getCurrentConfiguration().update("platform", platform));
 	}));
 
 	disposable.push(vscode.commands.registerCommand("extension.vs-solution-support.selectConfiguration", () => {		
-        uiManager.selectConfiguration().then((configuration) => getCurrentConfiguration().update("configuration", configuration));
+        uiManager.selectConfiguration(context.workspaceState.get<string>("solutionFile")).then((configuration) => getCurrentConfiguration().update("configuration", configuration));
 	}));
     
     disposable.push(vscode.commands.registerCommand("extension.vs-solution-support.buildSolution", () => {            
