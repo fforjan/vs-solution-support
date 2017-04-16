@@ -1,65 +1,34 @@
 # vs-solution-support README
 
-This is the README for your extension "vs-solution-support". After writing up a brief description, we recommend including the following sections.
+Welcome to the vs-solution-support readme.
+This extension is bringing some concept of Visual Studio to Visual Studio Code and the goal is to support doing WPF/C# development via vscode.
+
+![Build status](https://travis-ci.org/fforjan/vs-solution-support.svg?branch=master)
 
 ## Features
-
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
-
-For example if there is an image subfolder under your extension project workspace:
-
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+- Ability to pick a solution file - manually 
+- Simple solution explorer
+    At the moment the solution explorer displays only the solution node, projects (flat list) and dlls/nuget references.    
+- allow to build solution from VSCode
 
 ## Requirements
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+This rely on dotnet cli and need to be installed and msbuild to be available on command line.
 
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+Configuration points :
 
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
+ - solutionExplorer.file : solution to be used.
+ - solutionExplorer.configuration : which configuration (debug/release) to be build.
+ - solutionExplorer.platform : which platform (ANy CPU,...) to be build.
 
 ## Known Issues
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
+### 0.0.1
 
-### 1.0.0
+First cut !
 
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
------------------------------------------------------------------------------------------------------------
-
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on OSX or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on OSX or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (OSX) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
