@@ -5,16 +5,23 @@ import * as vscode from 'vscode';
 import * as tree from './tree/tree';
 import { buildSolution }   from './build/buildSolution';
 import { UiManager }   from './ui/UiManager';
+import { StatusBar }   from './ui/statusBar';
 import { DependenciesProvider } from './dependenciesViewer/dependenciesProvider';
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
 
-	const uiManager : UiManager = new UiManager();
-    const provider = new DependenciesProvider();
-	const workspaceConfiguration =  vscode.workspace.getConfiguration('solutionExplorer');
-
 	let disposable: vscode.Disposable[] = [];
+
+	const uiManager = new UiManager();
+	const statusBar = new StatusBar();
+    const provider = new DependenciesProvider();
+	const getCurrentConfiguration =  () => vscode.workspace.getConfiguration('solutionExplorer');
+	statusBar.update(<string>getCurrentConfiguration().get('platform'), <string>getCurrentConfiguration().get('configuration'));
+
+	disposable.push(vscode.workspace.onDidChangeConfiguration(() => {
+		let currentConf = getCurrentConfiguration();
+		statusBar.update(<string>currentConf.get('platform'), <string>currentConf.get('configuration'));}));	
 
 	disposable.push(vscode.Disposable.from(
 		vscode.workspace.registerTextDocumentContentProvider( DependenciesProvider.scheme, provider)
@@ -26,18 +33,18 @@ export function activate(context: vscode.ExtensionContext) {
 	}));
 
 	disposable.push(vscode.commands.registerCommand('extension.vs-solution-support.selectPlatform', () => {		
-        uiManager.selectPlatform().then((platform) => workspaceConfiguration.update("platform", platform));
+        uiManager.selectPlatform().then((platform) => getCurrentConfiguration().update("platform", platform));
 	}));
 
 	disposable.push(vscode.commands.registerCommand('extension.vs-solution-support.selectConfiguration', () => {		
-        uiManager.selectConfiguration().then((configuration) => workspaceConfiguration.update("configuration", configuration));
+        uiManager.selectConfiguration().then((configuration) => getCurrentConfiguration().update("configuration", configuration));
 	}));
     
     disposable.push(vscode.commands.registerCommand('extension.vs-solution-support.buildSolution', () => {            
-        buildSolution(context.workspaceState.get<string>('solutionFile'), <string>workspaceConfiguration.get('configuration'), <string>workspaceConfiguration.get('platform') );
+        buildSolution(context.workspaceState.get<string>('solutionFile'), <string>getCurrentConfiguration().get('configuration'), <string>getCurrentConfiguration().get('platform') );
     }));
 
-	disposable.push(vscode.window.registerTreeExplorerNodeProvider('solutionExplorer', new tree.SolutionProvider(vscode.workspace.rootPath, workspaceConfiguration, context.workspaceState )));
+	disposable.push(vscode.window.registerTreeExplorerNodeProvider('solutionExplorer', new tree.SolutionProvider(vscode.workspace.rootPath, getCurrentConfiguration, context.workspaceState )));
 
 	// This command will be invoked using exactly the node you provided in `resolveChildren`.
 	disposable.push(vscode.commands.registerCommand('extension.vs-solution-support.openSolutionTreeItem', (node: tree.DepNode) => {
