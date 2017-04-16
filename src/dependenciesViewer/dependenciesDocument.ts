@@ -1,10 +1,10 @@
-'use strict';
+"use strict";
 
-import * as vscode from 'vscode';
-import * as path from 'path';
-import * as fs from 'fs';
-import {Solution} from '../dotnet/solution';
-import {Project} from '../dotnet/project';
+import * as vscode from "vscode";
+import * as path from "path";
+import * as fs from "fs";
+import {Solution} from "../dotnet/solution";
+import {Project} from "../dotnet/project";
 export class DependenciesDocument {
     _emitter: any;
     _uri:  vscode.Uri;

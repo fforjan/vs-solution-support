@@ -25,39 +25,39 @@ function onLoad() {
     renderer.run();
 
     graphics.node(function (node) {
-        return Viva.Graph.svg('text')
-            .attr('width', nodeSize)
-            .attr('height', nodeSize)
+        return Viva.Graph.svg("text")
+            .attr("width", nodeSize)
+            .attr("height", nodeSize)
             .text(node.id);
     }).placeNode(function (nodeUI, pos) {
-        nodeUI.attr('x', pos.x - nodeSize / 2).attr('y', pos.y - nodeSize / 2);
+        nodeUI.attr("x", pos.x - nodeSize / 2).attr("y", pos.y - nodeSize / 2);
     });
 
     let createMarker = function (id) {
-        return Viva.Graph.svg('marker')
-            .attr('id', id)
-            .attr('viewBox', "0 0 10 10")
-            .attr('refX', "10")
-            .attr('refY', "5")
-            .attr('markerUnits', "strokeWidth")
-            .attr('markerWidth', "10")
-            .attr('markerHeight', "5")
-            .attr('orient', "auto");
+        return Viva.Graph.svg("marker")
+            .attr("id", id)
+            .attr("viewBox", "0 0 10 10")
+            .attr("refX", "10")
+            .attr("refY", "5")
+            .attr("markerUnits", "strokeWidth")
+            .attr("markerWidth", "10")
+            .attr("markerHeight", "5")
+            .attr("orient", "auto");
     },
 
-        marker = createMarker('Triangle');
-    marker.append('path').attr('d', 'M 0 0 L 10 5 L 0 10 z');
+        marker = createMarker("Triangle");
+    marker.append("path").attr("d", "M 0 0 L 10 5 L 0 10 z");
 
-    let defs = graphics.getSvgRoot().append('defs');
+    let defs = graphics.getSvgRoot().append("defs");
     defs.append(marker);
 
     let geom = Viva.Graph.geom();
 
     graphics.link(function (link) {
 
-        return Viva.Graph.svg('path')
-            .attr('stroke', 'lime')
-            .attr('marker-end', 'url(#Triangle)');
+        return Viva.Graph.svg("path")
+            .attr("stroke", "lime")
+            .attr("marker-end", "url(#Triangle)");
     }).placeLink(function (linkUI, fromPos, toPos) {
         let toNodeSize = nodeSize,
             fromNodeSize = nodeSize;
@@ -79,8 +79,8 @@ function onLoad() {
             toPos.x, toPos.y, fromPos.x, fromPos.y)
             || toPos;
 
-        let data = 'M' + from.x + ',' + from.y +
-            'L' + to.x + ',' + to.y;
+        let data = "M" + from.x + "," + from.y +
+            "L" + to.x + "," + to.y;
 
         linkUI.attr("d", data);
     });

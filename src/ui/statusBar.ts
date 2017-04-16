@@ -1,6 +1,6 @@
-'use strict';
+"use strict";
 
-import * as vscode from 'vscode';
+import * as vscode from "vscode";
 
 export class StatusBar {
     _statusBarPlatform: vscode.StatusBarItem;
