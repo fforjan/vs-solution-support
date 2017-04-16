@@ -12,6 +12,8 @@
 		],
 		"quotemark": [
 			"double"
-		]
+		],
+		"no-var-keyword": true,
+		"no-var-requires": true
 	}	
 }

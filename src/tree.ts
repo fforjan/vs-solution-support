@@ -49,9 +49,9 @@ export class SolutionProvider implements vscode.TreeExplorerNodeProvider<DepNode
 	getChildren(): Thenable<DepNode[]> {		
 		return new Promise<DepNode[]>((resolve) => 
 		{
-			var solution = <string>this.configuration.file || fs.readdirSync(this.workspaceRoot).find( _ => _.endsWith('.sln'));
+			let solution = <string>this.configuration.file || fs.readdirSync(this.workspaceRoot).find( _ => _.endsWith('.sln'));
 			
-			var absolutePath = path.join(this.workspaceRoot, solution );
+			let absolutePath = path.join(this.workspaceRoot, solution );
 			this.state.update("solutionFile", absolutePath);
 
 			resolve([ 

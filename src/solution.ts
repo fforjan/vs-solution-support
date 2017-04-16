@@ -14,7 +14,7 @@ export class SolutionNode  implements INodeItem {
     }
 
     getChildren(): Thenable<INodeItem[]> {        
-        var directory = path.dirname(this.solutionFile);
+        let directory = path.dirname(this.solutionFile);
         return Solution.ListProjects(this.solutionFile).then( (projects) => Promise.resolve(projects.map( project => new ProjectNode(path.join(directory, project)))));            
     }   
 }
