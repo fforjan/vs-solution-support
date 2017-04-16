@@ -66,8 +66,16 @@ export class DependenciesDocument {
 var graphics = Viva.Graph.View.svgGraphics(),
 nodeSize = 24;
 
+var layout = Viva.Graph.Layout.forceDirected(graph, {
+    springLength : 180,
+    springCoeff : 0.0005,
+    dragCoeff : 0.02,
+    gravity : -8
+});
+
 var renderer = Viva.Graph.View.renderer(graph, {
-    graphics : graphics
+    graphics : graphics,
+    layout : layout
 });
 renderer.run();
 
