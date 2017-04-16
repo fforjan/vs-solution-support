@@ -1,11 +1,10 @@
 # vs-solution-support README
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/fforjan/vs-solution-support.svg)](https://greenkeeper.io/)
-
 Welcome to the vs-solution-support readme.
 This extension is bringing some concept of Visual Studio to Visual Studio Code and the goal is to support doing WPF/C# development via vscode.
 
 [![Build status](https://travis-ci.org/fforjan/vs-solution-support.svg)](https://travis-ci.org/fforjan/vs-solution-support)
+[![Greenkeeper badge](https://badges.greenkeeper.io/fforjan/vs-solution-support.svg)](https://greenkeeper.io/)
 
 ## Features
 - Ability to pick a solution file - manually 
