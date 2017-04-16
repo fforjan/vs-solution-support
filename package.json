@@ -19,11 +19,19 @@
     "commands": [
       {
         "command": "extension.vs-solution-support.buildSolution",
-        "title": "Build Active Solution"
+        "title": "Solution: Build Active Solution"
       },
       {
         "command": "extension.vs-solution-support.displayDependencies",
-        "title": "Display Dependencies"
+        "title": "Solution: Display Dependencies"
+      },
+      {
+        "command": "extension.vs-solution-support.selectPlatform",
+        "title": "Solution: Select platform for build"
+      },
+      {
+        "command": "extension.vs-solution-support.selectConfiguration",
+        "title": "Solution: Selection configuration for build"
       }
     ],
     "explorer": {
@@ -38,6 +46,14 @@
         "solutionExplorer.file": {
           "type": "string",
           "default": null,
+          "description": "solution path in the folder"
+        },"solutionExplorer.configuration": {
+          "type": "string",
+          "default": "Debug",
+          "description": "solution path in the folder"
+        },"solutionExplorer.platforn": {
+          "type": "string",
+          "default": "AnyCpu",
           "description": "solution path in the folder"
         }
       }

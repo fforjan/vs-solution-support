@@ -5,7 +5,7 @@ import * as vscode from 'vscode';
 /**
  * UI Manager for all nuget related activities.
  */
-export default class UiManager {
+export class UiManager {
 
 	/**
 	 * Ask the user to make a choice between packages from reduced package information
