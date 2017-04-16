@@ -1,11 +1,10 @@
-'use strict';
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
-import * as vscode from 'vscode';
-import * as tree from './tree/tree';
-import { buildSolution }   from './build/buildSolution';
-import { UiManager }   from './ui/UiManager';
-import { StatusBar }   from './ui/statusBar';
+import * as vscode from "vscode";
+import * as tree from "./tree/tree";
+import { buildSolution }   from "./build/buildSolution";
+import { UiManager }   from "./ui/UiManager";
+import { StatusBar }   from "./ui/statusBar";
 import { DependenciesProvider } from "./dependenciesViewer/dependenciesProvider";
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed

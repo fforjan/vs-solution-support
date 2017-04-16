@@ -1,10 +1,10 @@
-import {INodeItem} from './inodeitem';
-import {ProjectNode } from './project';
-import * as path from 'path';
-import {Solution} from '../dotnet/solution';
+import {INodeItem} from "./inodeitem";
+import {ProjectNode } from "./project";
+import * as path from "path";
+import {Solution} from "../dotnet/solution";
 
 export class SolutionNode  implements INodeItem {    
-    kind: string = 'root';
+    kind: string = "root";
     label: string;
     
     constructor(public filePath : string) {

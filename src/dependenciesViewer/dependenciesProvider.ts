@@ -1,18 +1,13 @@
-/*---------------------------------------------------------
- * Copyright (C) Microsoft Corporation. All rights reserved.
- *--------------------------------------------------------*/
-'use strict';
-
-import * as vscode from 'vscode';
-import {DependenciesDocument} from './dependenciesDocument';
+import * as vscode from "vscode";
+import {DependenciesDocument} from "./dependenciesDocument";
 
 export class DependenciesProvider implements vscode.TextDocumentContentProvider {
 
-	static scheme = 'dependencies';
+	static scheme = "dependencies";
 
 	private _onDidChange = new vscode.EventEmitter<vscode.Uri>();
 	private _documents = new Map<string, DependenciesDocument>();
-	private _editorDecoration = vscode.window.createTextEditorDecorationType({ textDecoration: 'underline' });
+	private _editorDecoration = vscode.window.createTextEditorDecorationType({ textDecoration: "underline" });
 	private _subscriptions: vscode.Disposable;
 
 	constructor() {

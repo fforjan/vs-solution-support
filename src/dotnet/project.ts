@@ -1,7 +1,7 @@
-import { Dotnet } from './dotnet';
+import { Dotnet } from "./dotnet";
 
-import * as path from 'path';
-import * as fs from 'fs';
+import * as path from "path";
+import * as fs from "fs";
 
 export class Project {
 

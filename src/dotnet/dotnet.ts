@@ -8,9 +8,9 @@ export class Dotnet {
             return new Promise<string[]>( (resolve) => {
                 let result = "";
                 let solutionListProcess = spawn(dotnet,args);
-                solutionListProcess.stdout.setEncoding('utf8');
-                solutionListProcess.stdout.on('data', (data) => { result +=  data.toString();});
-                solutionListProcess.on('exit', () => {
+                solutionListProcess.stdout.setEncoding("utf8");
+                solutionListProcess.stdout.on("data", (data) => { result +=  data.toString();});
+                solutionListProcess.on("exit", () => {
                     resolve(Dotnet.splitIntoLines(result));
                 });
             });
