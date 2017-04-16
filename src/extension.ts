@@ -23,9 +23,9 @@ export function activate(context: vscode.ExtensionContext) {
     });
 
     const rootPath = vscode.workspace.rootPath;
-
+    
 	// The `providerId` here must be identical to `contributes.explorer.treeExplorerNodeProviderId` in package.json.
-	vscode.window.registerTreeExplorerNodeProvider('depTree', new tree.SolutionProvider(rootPath));
+	vscode.window.registerTreeExplorerNodeProvider('depTree', new tree.SolutionProvider(rootPath, vscode.workspace.getConfiguration('solutionExplorer') ));
 
 	// This command will be invoked using exactly the node you provided in `resolveChildren`.
 	vscode.commands.registerCommand('extension.openPackageOnNpm', (node: tree.DepNode) => {

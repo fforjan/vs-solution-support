@@ -8,23 +8,36 @@
         "vscode": "^1.11.0"
     },
     "enableProposedApi": true,
-	"categories": [
-		"Other"
-	],
-	"activationEvents": [
-		"*"
-	],
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+        "*"
+    ],
     "main": "./out/src/extension",
     "contributes": {
-        "commands": [{
-            "command": "extension.sayHello",
-            "title": "Hello World"
-        }],
-		"explorer": {
-			"treeLabel": "Dependencies",
-			"icon": "media/dep.svg",
-			"treeExplorerNodeProviderId": "depTree"
-		}	
+        "commands": [
+            {
+                "command": "extension.sayHello",
+                "title": "Hello World"
+            }
+        ],
+        "explorer": {
+            "treeLabel": "Dependencies",
+            "icon": "media/dep.svg",
+            "treeExplorerNodeProviderId": "depTree"
+        },
+        "configuration": {
+            "type": "object",
+            "title": "solution configuration",
+            "properties": {
+                "solutionExplorer.file": {
+                    "type": "string",
+                    "default": null,
+                    "description": "solution path in the folder"
+                }
+            }
+        }
     },
     "scripts": {
         "vscode:prepublish": "tsc -p ./",
