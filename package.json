@@ -51,9 +51,9 @@
           "type": "string",
           "default": "Debug",
           "description": "solution path in the folder"
-        },"solutionExplorer.platforn": {
+        },"solutionExplorer.platform": {
           "type": "string",
-          "default": "AnyCpu",
+          "default": "Any CPU",
           "description": "solution path in the folder"
         }
       }

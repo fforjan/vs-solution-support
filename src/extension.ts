@@ -11,8 +11,8 @@ import { DependenciesProvider } from './dependenciesViewer/dependenciesProvider'
 export function activate(context: vscode.ExtensionContext) {
 
 	const uiManager : UiManager = new UiManager();
-
     const provider = new DependenciesProvider();
+	const workspaceConfiguration =  vscode.workspace.getConfiguration('solutionExplorer');
 
 	let disposable: vscode.Disposable[] = [];
 
@@ -26,18 +26,18 @@ export function activate(context: vscode.ExtensionContext) {
 	}));
 
 	disposable.push(vscode.commands.registerCommand('extension.vs-solution-support.selectPlatform', () => {		
-        uiManager.selectPlatform().then((platform) => vscode.workspace.getConfiguration('solutionExplorer').update("platform", platform));
+        uiManager.selectPlatform().then((platform) => workspaceConfiguration.update("platform", platform));
 	}));
 
 	disposable.push(vscode.commands.registerCommand('extension.vs-solution-support.selectConfiguration', () => {		
-        uiManager.selectConfiguration().then((configuration) => vscode.workspace.getConfiguration('solutionExplorer').update("configuration", configuration));
+        uiManager.selectConfiguration().then((configuration) => workspaceConfiguration.update("configuration", configuration));
 	}));
     
     disposable.push(vscode.commands.registerCommand('extension.vs-solution-support.buildSolution', () => {            
-        buildSolution(context.workspaceState.get<string>('solutionFile'));
+        buildSolution(context.workspaceState.get<string>('solutionFile'), <string>workspaceConfiguration.get('configuration'), <string>workspaceConfiguration.get('platform') );
     }));
 
-	disposable.push(vscode.window.registerTreeExplorerNodeProvider('solutionExplorer', new tree.SolutionProvider(vscode.workspace.rootPath, vscode.workspace.getConfiguration('solutionExplorer'), context.workspaceState )));
+	disposable.push(vscode.window.registerTreeExplorerNodeProvider('solutionExplorer', new tree.SolutionProvider(vscode.workspace.rootPath, workspaceConfiguration, context.workspaceState )));
 
 	// This command will be invoked using exactly the node you provided in `resolveChildren`.
 	disposable.push(vscode.commands.registerCommand('extension.vs-solution-support.openSolutionTreeItem', (node: tree.DepNode) => {

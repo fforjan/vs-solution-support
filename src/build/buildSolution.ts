@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import * as path from 'path';
 import * as cp from 'child_process';
 
 function convertSeverity(severity: string): vscode.DiagnosticSeverity {
@@ -39,7 +40,7 @@ function analyseOutput(buildOutput: string, diagnostic: vscode.DiagnosticCollect
     });
 }
 
-export function buildSolution(solutionPath: string) {
+export function buildSolution(solutionPath: string, configuration: string, platform: string) {
 
     // ensure all files are saved
     vscode.workspace.saveAll();
@@ -48,8 +49,13 @@ export function buildSolution(solutionPath: string) {
     let channel = vscode.window.createOutputChannel("VSBuild");
     channel.clear();
     channel.show(true);
+    
+    channel.appendLine(`>> building '${path.basename(solutionPath)}' with ${configuration}/${platform}`);
 
-    const msbuidArgs = ["/t:Build", "/verbosity:quiet", "/m", "/property:GenerateFullPaths=true", solutionPath];
+
+    const msbuidArgs = ["/t:Build", "/verbosity:quiet", "/m", "/property:GenerateFullPaths=true", 
+                        solutionPath, 
+                        `/p:Configuration=${configuration}`, `/p:Platform=${platform}`];
 
     let process = cp.spawn("msbuild", msbuidArgs);
     process.stdout.on('data', chunk => {
@@ -61,10 +67,11 @@ export function buildSolution(solutionPath: string) {
     process.stderr.on('data', chunk => {
         let text = chunk.toString();
         buildOutput += text;
-        channel.append(text);
+        channel.append(text);        
     }
     );
     process.on('close', code => {
+        channel.append(">> Operation completed");
         let diagnostic = vscode.languages.createDiagnosticCollection("msbuild");
         diagnostic.clear();
         analyseOutput(buildOutput, diagnostic);

@@ -28,7 +28,7 @@ export class UiManager {
 	 */
 	public selectPlatform(): Thenable<string> {
 		let configuration: vscode.QuickPickItem[] = [{
-					label: "AnyCPU",
+					label: "Any CPU",
 					description: "Any CPU"
 				}];
 
