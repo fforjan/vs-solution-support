@@ -17,19 +17,19 @@ export class DependenciesDocument {
         this._emitter = emitter;
     }
 
-    get relationShips(): {from: string, to: string}[] {
-        return [ {from: "fred", to:"eric"}, {from: "fred", to:"erick"}];
+    get relationShips(): Thenable<{from: string, to: string}[]> {
+        return Promise.resolve([{from: "fred", to:"eric"}, {from: "fred", to:"erick"}]);
     }
 
-    get value() {
-        var relationShips = JSON.stringify(this.relationShips);
-        return `<html> <head>
+    get value() : Thenable<string> {
+        return this.relationShips.then((relationShips) =>         
+        Promise.resolve(`<html> <head>
         <title>VivaGraphs test page</title>
         <script src="https://anvaka.github.io/VivaGraphJS/dist/vivagraph.js"></script>
         <script type='text/javascript'>
                   function onLoad() {
 
-            var relationShips = ${relationShips};
+            var relationShips = ${JSON.stringify(relationShips)};
              var graph = Viva.Graph.graph();
 
 var graphics = Viva.Graph.View.svgGraphics(),
@@ -107,6 +107,6 @@ relationShips.forEach(function(relationShip) {graph.addLink(relationShip.from, r
         </script>
          <style type='text/css'>html, body, svg { width: 100%; height: 100%; background-color: white} </style>
     </head>
-    <body onload="onLoad()">    </body></html>`;
-    }
+    <body onload="onLoad()">    </body></html>`));
+    };
 }
