@@ -40,7 +40,7 @@ Configuration points :
 
 ## Known Issues
 
-- There is no detection for dotnet cli
+- There is no automatic install for dotnet cli
 - Solution Explorer do not refresh when modified
 
 ## Release Notes
