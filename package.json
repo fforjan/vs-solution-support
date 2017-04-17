@@ -1,5 +1,6 @@
 {
   "name": "vs-solution-support",
+  "license": "MIT",
   "displayName": "vs-solution-support",
   "description": "Add project and solution managment in regards of Visual Studio",
   "version": "0.0.1",
