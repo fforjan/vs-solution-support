@@ -40,4 +40,33 @@ export class Project {
             });
         });
     }
+
+     public static ListFilesToCompile(projectFile:string): Thenable<string[]> {
+        
+        return new Promise<string[]>((resolve, reject) => {
+            fs.readFile(projectFile, function (err, data) {
+             if (err) {
+                 resolve([]);
+             }
+             else {
+                let xmlContent = data.toString();
+                const regex = /<Compile\s*Include="([^:].*)"/g;
+                let m : RegExpExecArray;
+                let result:string[] = [];
+
+                while ((m = regex.exec(xmlContent)) !== null) {
+                    // This is necessary to avoid infinite loops with zero-width matches
+                    if (m.index === regex.lastIndex) {
+                        regex.lastIndex++;
+                    }
+    
+                    // The result can be accessed through the `m`-variable.                    
+                    result.push(m[1]);                    
+                }
+
+                resolve(result);
+             }
+            });
+        });
+    }
 }
