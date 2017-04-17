@@ -2,6 +2,7 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from "vscode";
 import * as tree from "./tree/tree";
+import * as notAvailableTree from "./tree/notAvailableTree";
 import { Dotnet } from "./dotnet/dotnet";
 import { buildSolution } from "./build/buildSolution";
 import { UiManager } from "./ui/UiManager";
@@ -67,6 +68,8 @@ export function activate(context: vscode.ExtensionContext) {
 			disposable.push(vscode.commands.registerCommand("extension.vs-solution-support.selectConfiguration", uiManager.displayDotNotCliNotinstalled));
 			disposable.push(vscode.commands.registerCommand("extension.vs-solution-support.buildSolution", uiManager.displayDotNotCliNotinstalled));
 			disposable.push(vscode.commands.registerCommand("extension.vs-solution-support.openSolutionTreeItem", uiManager.displayDotNotCliNotinstalled));
+			disposable.push(vscode.window.registerTreeExplorerNodeProvider("solutionExplorer", new notAvailableTree.NotAvailableSolution()));
+			uiManager.displayDotNotCliNotinstalled();
 		}
 		disposable.forEach(_ => context.subscriptions.push(_));
 	});

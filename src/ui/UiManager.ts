@@ -6,6 +6,7 @@ import { Solution } from "../dotnet/solution";
  */
 export class UiManager {
 
+	public static readonly dotnetCliInstallMessage : string = "dotnet cli is not installed, please visit https://www.microsoft.com/net/core#windowscmd";
 	/**
 	 * Ask the user to make a choice between packages from reduced package information
 	 */
@@ -31,6 +32,6 @@ export class UiManager {
 	}
 
 	public displayDotNotCliNotinstalled() {
-		vscode.window.showErrorMessage("dotnet cli is not installed, please visit https://www.microsoft.com/net/core#windowscmd");
+		vscode.window.showErrorMessage(UiManager.dotnetCliInstallMessage);
 	}
 }

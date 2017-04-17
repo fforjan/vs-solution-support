@@ -1,5 +1,5 @@
 import {spawn} from "child_process";
-const dotnet = "dotnet";
+const dotnet = "dotnet2";
 
 export class Dotnet {
 
