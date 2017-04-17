@@ -15,10 +15,14 @@ This extension is bringing some concept of Visual Studio to Visual Studio Code a
     * Items (link items are not supported)
 - Allow to build solution from VSCode
     * Active  platform & configuration are displayed in the status bar
+
     ![Status bar](Media/statusbar.png)
+
     * Error are reported in both output and error list:
+
     ![Problem and output after build](Media/problemsAndOutputAfterBuild.png)
 - Render projects dependencies within the solutoin
+
     ![Dependencies demo](Media/dependencies.gif)
 
 
@@ -36,6 +40,8 @@ Configuration points :
 
 ## Known Issues
 
+- There is no detection for dotnet cli
+- Solution Explorer do not refresh when modified
 
 ## Release Notes
 
