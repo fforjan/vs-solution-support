@@ -71,7 +71,8 @@ export function activate(context: vscode.ExtensionContext) {
 			disposable.push(vscode.window.registerTreeExplorerNodeProvider("solutionExplorer", new notAvailableTree.NotAvailableSolution()));
 			uiManager.displayDotNotCliNotinstalled();
 		}
-		disposable.forEach(_ => context.subscriptions.push(_));
+
+		context.subscriptions.push(... disposable);
 	});
 }
 

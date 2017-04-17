@@ -55,7 +55,7 @@ export class FolderNode implements INodeItem {
     }  
 
     getFolderChildren(): Thenable<INodeItem[]> {
-       return this.node.then( data => Object.keys(data.withSubFolder).map(_ => new FolderNode(path.join(this.filePath, _), Promise.resolve(new ItemNode(data.withSubFolder[_])))));
+       return this.node.then( data => Object.keys(data.withSubFolder).map(_ => new FolderNode(path.join(path.dirname(this.filePath), _), Promise.resolve(new ItemNode(data.withSubFolder[_])))));
     }    
 
     getChildren(): Thenable<INodeItem[]> {
@@ -67,11 +67,11 @@ export class FolderNode implements INodeItem {
 
 export class ItemsNode extends FolderNode {    
     constructor(filePath:string) {
-        super(path.dirname(filePath), ItemNode.fromProjectFile(filePath),"Items");        
+        super(filePath, ItemNode.fromProjectFile(filePath),"Items");        
     }    
 
-    getChildren(): Thenable<INodeItem[]> {
-        return super.getChildren().then((nodes) => Promise.resolve(nodes.sort(ItemsNode.ensureKeyFoldersFirst)));
+    getFolderChildren(): Thenable<INodeItem[]> {
+        return super.getFolderChildren().then((nodes) => Promise.resolve(nodes.sort(ItemsNode.ensureKeyFoldersFirst)));
     }
 
     static ensureKeyFoldersFirst(a:INodeItem, b:INodeItem):number {
