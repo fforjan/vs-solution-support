@@ -48,7 +48,12 @@ export function activate(context: vscode.ExtensionContext) {
 	// This command will be invoked using exactly the node you provided in `resolveChildren`.
 	disposable.push(vscode.commands.registerCommand("extension.vs-solution-support.openSolutionTreeItem", (node: tree.DepNode) => {
 		if (node.kind === "leaf") {
-			vscode.commands.executeCommand("vscode.open", vscode.Uri.file(node.filePath));
+			let documentUri: vscode.Uri = node.filePath as vscode.Uri;
+			if(typeof documentUri === "string") {
+				documentUri = vscode.Uri.file(<string>node.filePath);
+			}
+		
+			vscode.commands.executeCommand("vscode.open", documentUri);
 		}
 	}));
 
