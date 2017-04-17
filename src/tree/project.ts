@@ -27,7 +27,10 @@ export class ProjectReferencesNode implements INodeItem {
     }
 
     getChildren(): Thenable<INodeItem[]> {
-        return Project.ListProjectReferences(this.filePath).then( (references) =>  Promise.resolve(references.map( _ => new FileReferenceNode(path.join(path.dirname(this.filePath) ,_)))));
+        return Project.ListProjectReferences(this.filePath)
+                        .then( (references) =>  Promise.resolve(
+                            references.map( _ => new FileReferenceNode(path.join(path.dirname(this.filePath) ,_))).sort( (a, b) => a.label < b.label ?  1 : -1)
+                            ));
     }
 
 }
