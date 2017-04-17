@@ -28,7 +28,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	disposable.push(vscode.commands.registerCommand("extension.vs-solution-support.displayDependencies", () => {		
         let uri = vscode.Uri.parse(`${ DependenciesProvider.scheme}:solution?${context.workspaceState.get<string>("solutionFile")}`);
-        return vscode.commands.executeCommand("vscode.previewHtml", uri, vscode.ViewColumn.Two, "Solution Dependencies");
+        return vscode.commands.executeCommand("vscode.previewHtml", uri, vscode.ViewColumn.One, "Solution Dependencies");
 	}));
 
 	disposable.push(vscode.commands.registerCommand("extension.vs-solution-support.selectPlatform", () => {		
