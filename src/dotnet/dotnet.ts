@@ -25,4 +25,16 @@ export class Dotnet {
         lines = lines.filter((e) => e.trim() !== ""); 
         return lines;
     }
+
+    public static isinstalled(): Thenable<boolean> {
+        return new Promise<boolean>( resolve => {
+            let solutionListProcess = spawn(dotnet,["--version"]);
+            solutionListProcess.on("exit", (err) => {
+                resolve(err === 0);
+            });
+            solutionListProcess.on("error", (err) => {
+                resolve(false);
+            });
+        });
+    }
 }

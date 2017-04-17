@@ -29,4 +29,8 @@ export class UiManager {
 				return vscode.window.showQuickPick(configuration, { placeHolder: "Select the configuration" }).then(result => Promise.resolve(result.label));
 			});
 	}
+
+	public displayDotNotCliNotinstalled() {
+		vscode.window.showErrorMessage("dotnet cli is not installed, please visit https://www.microsoft.com/net/core#windowscmd");
+	}
 }
