@@ -50,7 +50,7 @@ export class Project {
              }
              else {
                 let xmlContent = data.toString();
-                const regex = /<Compile\s*Include="([^:].*)"/g;
+                const regex = /<Compile\s*Include="([^:].*)"\s*\/>/g;
                 let m : RegExpExecArray;
                 let result:string[] = [];
 
