@@ -1,7 +1,6 @@
-import {INodeItem } from "./inodeitem";
-import {ReferenceNode } from "./referenceNode";
+import {INodeItem, alphabeticalOrdering } from "./inodeitem";
+import {FileReferenceNode } from "./referenceNode";
 import { Project }from "../dotnet/project";
-import * as path from "path";
 
 export class ProjectReferencesNode implements INodeItem {
     kind: string;
@@ -15,15 +14,8 @@ export class ProjectReferencesNode implements INodeItem {
     getChildren(): Thenable<INodeItem[]> {
         return Project.ListProjectReferences(this.filePath)
                         .then( (references) =>  Promise.resolve(
-                            references.map( _ => new FileReferenceNode(path.join(path.dirname(this.filePath) ,_))).sort( (a, b) => a.label < b.label ?  1 : -1)
+                            references.map( _ => FileReferenceNode.Create(this ,_, false)).sort(alphabeticalOrdering)
                             ));
     }
 
-}
-
-export class FileReferenceNode extends ReferenceNode {    
-
-    constructor(private referencePath:string)  {
-        super(path.basename(referencePath, path.extname(referencePath)), referencePath);
-    }
 }

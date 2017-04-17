@@ -1,4 +1,4 @@
-import {INodeItem} from "./inodeitem";
+import {INodeItem, alphabeticalOrdering} from "./inodeitem";
 import {ProjectNode } from "./project";
 import * as path from "path";
 import {Solution} from "../dotnet/solution";
@@ -16,7 +16,7 @@ export class SolutionNode  implements INodeItem {
         let directory = path.dirname(this.filePath);
         return Solution.ListProjects(this.filePath).then(
              (projects) => Promise.resolve(
-                 projects.map( project => new ProjectNode(path.join(directory, project))).sort( (a, b) => a.label < b.label ?  1 : -1)
+                 projects.map( project => new ProjectNode(path.join(directory, project))).sort( alphabeticalOrdering)
             ));            
     }   
 }
