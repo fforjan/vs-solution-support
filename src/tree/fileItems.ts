@@ -69,4 +69,18 @@ export class ItemsNode extends FolderNode {
     constructor(filePath:string) {
         super(path.dirname(filePath), ItemNode.fromProjectFile(filePath),"Items");        
     }    
+
+    getChildren(): Thenable<INodeItem[]> {
+        return super.getChildren().then((nodes) => Promise.resolve(nodes.sort(ItemsNode.ensureKeyFoldersFirst)));
+    }
+
+    static ensureKeyFoldersFirst(a:INodeItem, b:INodeItem):number {
+        if(a.label === "Properties"){
+            return -1;
+        }
+        if(b.label === "Properties"){
+            return 1;
+        }
+        return alphabeticalOrdering(a,b);
+    }
 }
