@@ -11,6 +11,9 @@ This extension is bringing some concept of Visual Studio to Visual Studio Code a
 - Simple solution explorer
     At the moment the solution explorer displays only the solution node, projects (flat list) and dlls/nuget references.    
 - allow to build solution from VSCode
+- Render projects dependencies within the solutoin
+![Dependencies demo](Media/dependencies.gif)
+
 
 ## Requirements
 
